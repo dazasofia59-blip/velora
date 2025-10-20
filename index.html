@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="/xampp/htdocs/Velora/css/styles.css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Inventario - Zapatos</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="homepage">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-shoe-prints me-2"></i>Gestión Inventario Zapatos
+            </a>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-8 mx-auto text-center">
+                <div class="hero-section p-5 rounded">
+                    <h1 class="display-4 mb-4">Sistema de Gestión de Inventario</h1>
+                    <p class="lead mb-4">Controla y administra tu inventario de zapatos de manera eficiente</p>
+                    <a href="login.html" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                    </a>
+                    <a href="#features" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-info-circle me-2"></i>Más Información
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="features" class="row mt-5">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-shoe-prints fa-3x text-primary mb-3"></i>
+                        <h3 class="card-title">Gestión de Productos</h3>
+                        <p class="card-text">Administra todos tus productos de calzado, categorías, tallas y características.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-boxes fa-3x text-primary mb-3"></i>
+                        <h3 class="card-title">Control de Inventario</h3>
+                        <p class="card-text">Registra entradas, salidas y ajustes de inventario con seguimiento completo.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-bell fa-3x text-primary mb-3"></i>
+                        <h3 class="card-title">Alertas Inteligentes</h3>
+                        <p class="card-text">Recibe notificaciones cuando el stock esté por debajo del mínimo establecido.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container text-center">
+            <p>&copy; 2025 Sistema de Gestión de Inventario de Zapatos</p>
+        </div>
+    </footer>
+
+    <script src="js/database.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
