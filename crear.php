@@ -1,6 +1,9 @@
 <?php
 include_once 'config/database.php';
 include_once 'models/Producto.php';
+include_once 'includes/session.php';
+Session::requireLogin(); // Para crear, editar, eliminar
+
 
 $database = new Database();
 $db = $database->getConnection();
