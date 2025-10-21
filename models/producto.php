@@ -45,7 +45,7 @@ class Producto
         $stmt->bindParam(":nombre", $this->nombre);
         $stmt -
             $stmt->bindParam(":precio", $this->precio);
-        $stmt->bindParam(":stock", $this->stock);
+        $stmt->bindParam(":stock", $this->stock_minimo);
         $stmt->bindParam(":categoria", $this->categoria);
 
         if ($stmt->execute()) {
@@ -75,7 +75,6 @@ class Producto
 
         if ($row) {
             $this->nombre = $row['nombre'];
-            $this->descripcion = $row['descripcion'];
             $this->precio = $row['precio'];
             $this->stock_minimo = $row['stock_minimo'];
             $this->categoria = $row['categoria'];
@@ -97,7 +96,7 @@ class Producto
         // Limpiar datos
         $this->nombre = htmlspecialchars(strip_tags($this->nombre));
         $this->precio = htmlspecialchars(strip_tags($this->precio));
-        $this->stock_minimo = htmlspecialchars(strip_tags($this->stock));
+        $this->stock_minimo = htmlspecialchars(strip_tags($this->stock_minimo));
         $this->categoria = htmlspecialchars(strip_tags($this->categoria));
         $this->id = htmlspecialchars(strip_tags($this->id));
         $this->fecha_actualizacion = htmlspecialchars(strip_tags($this->fecha_actualizacion));
