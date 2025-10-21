@@ -20,7 +20,7 @@ $num = $stmt->rowCount();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Inventario</title>
+    <title>Sistema de Inventario velora</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .card {
@@ -117,7 +117,7 @@ $num = $stmt->rowCount();
                 <?php else: ?>
                     <div class="alert alert-info text-center">
                         <h4>No hay productos en el inventario</h4>
-                        <p>Comienza agregando tu primer producto.</p>
+                        <p>agrega tu primer producto.</p>
                     </div>
                 <?php endif; ?>
             </div>
@@ -137,7 +137,7 @@ $num = $stmt->rowCount();
     </div>
 
     <footer class="bg-dark text-white text-center py-3 mt-5">
-        <p>Sistema de Inventario &copy; <?php echo date('Y'); ?></p>
+        <p>Sistema de Inventario velora &copy; <?php echo date('Y'); ?></p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

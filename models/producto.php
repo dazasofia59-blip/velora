@@ -1,15 +1,20 @@
 <?php
 class Producto {
     private $conn;
-    private $table_name = "productos";
+    private $table_name = "insumos";
 
     public $id;
     public $nombre;
-    public $descripcion;
-    public $precio;
-    public $stock;
     public $categoria;
+    public $cantidad;
+    public $unidad;
+    public $prooveedor;
+    public $precio;
+    public $stock_minimo;
+    public $Stock_maximo;
     public $fecha_creacion;
+    public $fecha_actualizacion;
+    public $activo;
 
     public function __construct($db) {
         $this->conn = $db;
@@ -18,21 +23,24 @@ class Producto {
     // Crear producto
     public function crear() {
         $query = "INSERT INTO " . $this->table_name . " 
-                 SET nombre=:nombre, descripcion=:descripcion, precio=:precio, 
-                     stock=:stock, categoria=:categoria";
+                SET nombre=:nombre, precio=:precio, cantidad=:cantidad, unidad=:unidad, 
+                    prooveedor=:prooveedor, stock_minimo=:stock_minimo, Stock_maximo=:Stock_maximo, 
+                    fecha_creacion=:fecha_creacion, fecha_actualizacion=:fecha_actualizacion, activo=:activo, 
+                    categoria=:categoria";
 
         $stmt = $this->conn->prepare($query);
 
         // Limpiar datos
         $this->nombre = htmlspecialchars(strip_tags($this->nombre));
-        $this->descripcion = htmlspecialchars(strip_tags($this->descripcion));
-        $this->precio = htmlspecialchars(strip_tags($this->precio));
-        $this->stock = htmlspecialchars(strip_tags($this->stock));
+        $this->precio = htmlspecialchars(strip_tags($this->precio));    
+        $this->stock_minimo = htmlspecialchars(strip_tags($this->stock_minimo));
         $this->categoria = htmlspecialchars(strip_tags($this->categoria));
+        $this->fecha_creacion = htmlspecialchars(strip_tags($this->fecha_creacion));
+        $this->activo = htmlspecialchars(strip_tags($this->activo));
 
         // Vincular parámetros
         $stmt->bindParam(":nombre", $this->nombre);
-        $stmt->bindParam(":descripcion", $this->descripcion);
+        $stmt-
         $stmt->bindParam(":precio", $this->precio);
         $stmt->bindParam(":stock", $this->stock);
         $stmt->bindParam(":categoria", $this->categoria);
@@ -64,7 +72,7 @@ class Producto {
             $this->nombre = $row['nombre'];
             $this->descripcion = $row['descripcion'];
             $this->precio = $row['precio'];
-            $this->stock = $row['stock'];
+            $this->stock_minimo = $row['stock_minimo'];
             $this->categoria = $row['categoria'];
             return true;
         }
@@ -75,24 +83,23 @@ class Producto {
     public function actualizar() {
         $query = "UPDATE " . $this->table_name . " 
                 SET nombre=:nombre, descripcion=:descripcion, precio=:precio, 
-                    stock=:stock, categoria=:categoria 
+                    stock_minimo=:stock_minimo, categoria=:categoria ,fecha_actualizacion=:fecha_actualizacion
                 WHERE id=:id";
 
         $stmt = $this->conn->prepare($query);
 
         // Limpiar datos
         $this->nombre = htmlspecialchars(strip_tags($this->nombre));
-        $this->descripcion = htmlspecialchars(strip_tags($this->descripcion));
         $this->precio = htmlspecialchars(strip_tags($this->precio));
-        $this->stock = htmlspecialchars(strip_tags($this->stock));
+        $this->stock_minimo = htmlspecialchars(strip_tags($this->stock));
         $this->categoria = htmlspecialchars(strip_tags($this->categoria));
         $this->id = htmlspecialchars(strip_tags($this->id));
+        $this->fecha_actualizacion = htmlspecialchars(strip_tags($this->fecha_actualizacion));
 
         // Vincular parámetros
         $stmt->bindParam(":nombre", $this->nombre);
-        $stmt->bindParam(":descripcion", $this->descripcion);
         $stmt->bindParam(":precio", $this->precio);
-        $stmt->bindParam(":stock", $this->stock);
+        $stmt->bindParam(":stock_minimo", $this->stock_minimo);
         $stmt->bindParam(":categoria", $this->categoria);
         $stmt->bindParam(":id", $this->id);
 
