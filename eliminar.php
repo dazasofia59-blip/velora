@@ -2,7 +2,7 @@
 include_once 'config/database.php';
 include_once 'models/Producto.php';
 include_once 'includes/session.php';
-Session::requireLogin(); // Para crear, editar, eliminar
+Session::requireAdmin(); // Para crear, editar, eliminar
 
 $database = new Database();
 $db = $database->getConnection();
@@ -10,9 +10,8 @@ $producto = new Producto($db);
 
 $producto->id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: ID no encontrado.');
 
-if($producto->eliminar()){
+if ($producto->eliminar()) {
     header("Location: index.php?mensaje=Producto eliminado exitosamente&tipo=success");
-} else{
+} else {
     header("Location: index.php?mensaje=No se pudo eliminar el producto&tipo=danger");
 }
-?>

@@ -21,6 +21,7 @@ $num = $stmt->rowCount();
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,8 +30,9 @@ $num = $stmt->rowCount();
     <style>
         .card {
             margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -39,6 +41,7 @@ $num = $stmt->rowCount();
         }
     </style>
 </head>
+
 <body>
     <?php include_once 'includes/header.php'; ?>
 
@@ -47,7 +50,7 @@ $num = $stmt->rowCount();
             <h1 class="text-center">🏪 Sistema de Inventario</h1>
             <p class="text-center lead">
                 Bienvenido, <?php echo Session::getUserInfo()['nombre_completo']; ?>!
-                <?php if(Session::isAdmin()): ?>
+                <?php if (Session::isAdmin()): ?>
                     <span class="badge bg-warning">👑 Administrador</span>
                 <?php endif; ?>
             </p>
@@ -66,7 +69,7 @@ $num = $stmt->rowCount();
 
         <!-- Mensajes de éxito/error -->
         <?php
-        if(isset($_GET['mensaje'])) {
+        if (isset($_GET['mensaje'])) {
             $tipo = $_GET['tipo'] ?? 'success';
             echo "<div class='alert alert-{$tipo} alert-dismissible fade show' role='alert'>";
             echo htmlspecialchars($_GET['mensaje']);
@@ -80,10 +83,11 @@ $num = $stmt->rowCount();
     </div>
 
     <footer class="bg-dark text-white text-center py-3 mt-5">
-        <p>Sistema de Inventario &copy; <?php echo date('Y'); ?> | 
+        <p>Sistema de Inventario &copy; <?php echo date('Y'); ?> |
             Usuario: <?php echo Session::getUserInfo()['nombre_completo']; ?></p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -4,7 +4,7 @@ include_once 'models/Usuario.php';
 include_once 'includes/session.php';
 
 // Si ya está logueado, redirigir al index
-if(Session::isLoggedIn()) {
+if (Session::isLoggedIn()) {
     header("Location: index.php");
     exit();
 }
@@ -15,15 +15,15 @@ $usuario = new Usuario($db);
 
 $error = '';
 
-if($_POST){
+if ($_POST) {
     $usuario->username = $_POST['username'];
     $usuario->password = $_POST['password'];
 
-    if($usuario->login()){
+    if ($usuario->login()) {
         Session::login($usuario->id, $usuario->username, $usuario->nombre_completo, $usuario->rol);
         header("Location: index.php");
         exit();
-    } else{
+    } else {
         $error = "Usuario o contraseña incorrectos.";
     }
 }
@@ -31,6 +31,7 @@ if($_POST){
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,11 +44,13 @@ if($_POST){
             display: flex;
             align-items: center;
         }
+
         .login-card {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
+
         .login-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -57,6 +60,7 @@ if($_POST){
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="row justify-content-center">
@@ -67,7 +71,7 @@ if($_POST){
                         <p class="mb-0">Sistema de Inventario</p>
                     </div>
                     <div class="card-body p-4">
-                        <?php if($error): ?>
+                        <?php if ($error): ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <?php echo $error; ?>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -77,13 +81,13 @@ if($_POST){
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                             <div class="mb-3">
                                 <label class="form-label">👤 Usuario</label>
-                                <input type="text" name="username" class="form-control form-control-lg" 
-                                       placeholder="Ingresa tu usuario" required autofocus>
+                                <input type="text" name="username" class="form-control form-control-lg"
+                                    placeholder="Ingresa tu usuario" required autofocus>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">🔒 Contraseña</label>
-                                <input type="password" name="password" class="form-control form-control-lg" 
-                                       placeholder="Ingresa tu contraseña" required>
+                                <input type="password" name="password" class="form-control form-control-lg"
+                                    placeholder="Ingresa tu contraseña" required>
                             </div>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary btn-lg">🚀 Ingresar al Sistema</button>
@@ -107,4 +111,5 @@ if($_POST){
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
