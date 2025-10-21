@@ -20,7 +20,7 @@ if ($_POST) {
     $usuario->password = $_POST['password'];
 
     if ($usuario->login()) {
-        Session::login($usuario->id, $usuario->username, $usuario->nombre_completo, $usuario->rol);
+        Session::login($usuario->id, $usuario->username, $usuario->nombre, $usuario->rol);
         header("Location: index.php");
         exit();
     } else {
@@ -97,11 +97,11 @@ if ($_POST) {
                         <div class="text-center mt-4">
                             <p class="text-muted">
                                 <strong>Usuarios de prueba:</strong><br>
-                                👑 Admin: <code>admin</code> / <code>admin123</code><br>
+                                <!-- 👑 Admin: <code>admin</code> / <code>admin123</code><br>
                                 👤 Usuario: <code>usuario1</code> / <code>admin123</code>
-                            </p>
-                            <hr>
-                            <a href="registro.php" class="btn btn-outline-primary">📝 Crear Cuenta</a>
+                            </p> -->
+                                <hr>
+                                <a href="registro.php" class="btn btn-outline-primary">📝 Crear Cuenta</a>
                         </div>
                     </div>
                 </div>

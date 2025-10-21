@@ -20,7 +20,7 @@ if ($_POST) {
     $usuario->username = $_POST['username'];
     $usuario->email = $_POST['email'];
     $usuario->password = $_POST['password'];
-    $usuario->nombre_completo = $_POST['nombre_completo'];
+    $usuario->nombre = $_POST['nombre'];
     $usuario->rol = 'usuario'; // Por defecto todos son usuarios normales
 
     // Validar que las contraseñas coincidan
