@@ -85,8 +85,8 @@ class Producto
     public function actualizar()
     {
         $query = "UPDATE " . $this->table_name . " 
-                SET nombre=:nombre, descripcion=:descripcion, precio=:precio, 
-                    stock_minimo=:stock_minimo, categoria=:categoria ,fecha_actualizacion=:fecha_actualizacion
+                SET nombre=:nombre, precio=:precio, 
+                    stock_minimo=:stock_minimo, categoria=:categoria 
                 WHERE id=:id";
 
         $stmt = $this->conn->prepare($query);
@@ -97,7 +97,7 @@ class Producto
         $this->stock_minimo = htmlspecialchars(strip_tags($this->stock_minimo));
         $this->categoria = htmlspecialchars(strip_tags($this->categoria));
         $this->id = htmlspecialchars(strip_tags($this->id));
-        $this->fecha_actualizacion = htmlspecialchars(strip_tags($this->fecha_actualizacion));
+        // $this->fecha_actualizacion = htmlspecialchars(strip_tags($this->fecha_actualizacion));
 
         // Vincular parámetros
         $stmt->bindParam(":nombre", $this->nombre);

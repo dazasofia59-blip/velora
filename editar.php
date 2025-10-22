@@ -73,7 +73,7 @@ if ($_POST) {
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Stock</label>
-                                        <input type="number" name="stock_minimo" class="form-control" value="<?php echo $stock; ?>" required>
+                                        <input type="number" name="stock_minimo" class="form-control" value="<?php echo $stock_minimo; ?>" required>
                                     </div>
                                 </div>
                             </div>
