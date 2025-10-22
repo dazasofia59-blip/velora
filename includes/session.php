@@ -35,11 +35,11 @@ class Session
     }
 
     // Iniciar sesión
-    public static function login($user_id, $username, $nombre_completo, $rol)
+    public static function login($user_id, $username, $nombre, $rol)
     {
         $_SESSION['user_id'] = $user_id;
         $_SESSION['username'] = $username;
-        $_SESSION['nombre_completo'] = $nombre_completo;
+        $_SESSION['nombre'] = $nombre;
         $_SESSION['user_rol'] = $rol;
         $_SESSION['login_time'] = time();
     }
@@ -58,7 +58,7 @@ class Session
             return [
                 'id' => $_SESSION['user_id'],
                 'username' => $_SESSION['username'],
-                'nombre_completo' => $_SESSION['nombre_completo'],
+                'nombre' => $_SESSION['nombre'],
                 'rol' => $_SESSION['user_rol']
             ];
         }

@@ -9,16 +9,15 @@ $database = new Database();
 $db = $database->getConnection();
 $producto = new Producto($db);
 
-if($_POST){
+if ($_POST) {
     $producto->nombre = $_POST['nombre'];
-    $producto->descripcion = $_POST['descripcion'];
     $producto->precio = $_POST['precio'];
-    $producto->stock = $_POST['stock'];
+    $producto->stock_minimo = $_POST['stock_minimo'];
     $producto->categoria = $_POST['categoria'];
 
-    if($producto->crear()){
+    if ($producto->crear()) {
         header("Location: index.php?mensaje=Producto creado exitosamente&tipo=success");
-    } else{
+    } else {
         echo "<div class='alert alert-danger'>No se pudo crear el producto.</div>";
     }
 }
@@ -26,12 +25,14 @@ if($_POST){
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Producto</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-5">
         <div class="row">
@@ -63,7 +64,7 @@ if($_POST){
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Stock</label>
-                                        <input type="number" name="stock" class="form-control" required>
+                                        <input type="number" name="stock_minimo" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
@@ -82,4 +83,5 @@ if($_POST){
         </div>
     </div>
 </body>
+
 </html>
