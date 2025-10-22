@@ -242,8 +242,8 @@ $datos_graficos = $producto->obtenerDatosGraficos();
                                                 -->
                                                 <td>$<?php echo number_format($row['precio'], 2); ?></td>
                                                 <td>
-                                                    <span class="badge <?php echo $row['stock'] > 10 ? 'bg-success' : ($row['stock'] > 0 ? 'bg-warning' : 'bg-danger'); ?>">
-                                                        <?php echo $row['stock']; ?> unidades
+                                                    <span class="badge <?php echo $row['stock_minimo'] > 10 ? 'bg-success' : ($row['stock_minimo'] > 0 ? 'bg-warning' : 'bg-danger'); ?>">
+                                                        <?php echo $row['stock_minimo']; ?> unidades
                                                     </span>
                                                 </td>
                                                 <td>
