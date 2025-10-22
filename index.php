@@ -89,7 +89,7 @@ $datos_graficos = $producto->obtenerDatosGraficos();
         <div class="container">
             <h1 class="text-center">📊 Dashboard de Inventario</h1>
             <p class="text-center lead">
-                Bienvenido, <?php echo Session::getUserInfo()['nombre_completo']; ?>!
+                Bienvenido, <?php echo Session::getUserInfo()['nombre']; ?>!
                 <?php if (Session::isAdmin()): ?>
                     <span class="badge bg-warning">👑 Administrador</span>
                 <?php endif; ?>

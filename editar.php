@@ -11,26 +11,25 @@ $producto = new Producto($db);
 
 $producto->id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: ID no encontrado.');
 
-if($producto->leerUno()){
+if ($producto->leerUno()) {
     $nombre = $producto->nombre;
-    $descripcion = $producto->descripcion;
     $precio = $producto->precio;
-    $stock = $producto->stock;
+    $stock_minimo = $producto->stock_minimo;
     $categoria = $producto->categoria;
 } else {
     header("Location: index.php?mensaje=Producto no encontrado&tipo=danger");
 }
 
-if($_POST){
+if ($_POST) {
     $producto->nombre = $_POST['nombre'];
-    $producto->descripcion = $_POST['descripcion'];
+    // $producto->descripcion = $_POST['descripcion'];
     $producto->precio = $_POST['precio'];
-    $producto->stock = $_POST['stock'];
+    $producto->stock_minimo = $_POST['stock_minimo'];
     $producto->categoria = $_POST['categoria'];
 
-    if($producto->actualizar()){
+    if ($producto->actualizar()) {
         header("Location: index.php?mensaje=Producto actualizado exitosamente&tipo=success");
-    } else{
+    } else {
         echo "<div class='alert alert-danger'>No se pudo actualizar el producto.</div>";
     }
 }
@@ -38,12 +37,14 @@ if($_POST){
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Producto</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-5">
         <div class="row">
@@ -58,10 +59,7 @@ if($_POST){
                                 <label class="form-label">Nombre del Producto</label>
                                 <input type="text" name="nombre" class="form-control" value="<?php echo $nombre; ?>" required>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Descripción</label>
-                                <textarea name="descripcion" class="form-control" rows="3"><?php echo $descripcion; ?></textarea>
-                            </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -75,7 +73,7 @@ if($_POST){
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Stock</label>
-                                        <input type="number" name="stock" class="form-control" value="<?php echo $stock; ?>" required>
+                                        <input type="number" name="stock_minimo" class="form-control" value="<?php echo $stock; ?>" required>
                                     </div>
                                 </div>
                             </div>
@@ -94,4 +92,5 @@ if($_POST){
         </div>
     </div>
 </body>
+
 </html>
