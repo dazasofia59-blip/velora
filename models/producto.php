@@ -27,7 +27,7 @@ class Producto
     public function crear()
     {
         $query = "INSERT INTO " . $this->table_name . " 
-                (nombre,descripcion, precio, stock_minimo, categoria) 
+                (nombre, precio, descripcion, stock_minimo, categoria) 
                 VALUES 
                 (:nombre, :precio, :descripcion, :stock_minimo, :categoria)";
 
