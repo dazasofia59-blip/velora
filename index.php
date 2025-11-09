@@ -117,7 +117,7 @@ $datos_graficos = $producto->obtenerDatosGraficos();
             <div class="col-md-3">
                 <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
                     <div>⚠️</div>
-                    <div class="stat-number"><?php echo $estadisticas['stock_bajo']; ?></div>
+                    <div class="stat-number"><?php echo $estadisticas['stock_bajo']['cantidad']; ?></div>
                     <div>Stock Bajo</div>
                 </div>
             </div>
@@ -201,8 +201,8 @@ $datos_graficos = $producto->obtenerDatosGraficos();
                             <div class="mb-2 p-2 border rounded">
                                 <div class="fw-bold"><?php echo htmlspecialchars($producto_stock['nombre']); ?></div>
                                 <div>
-                                    <span class="badge <?php echo $producto_stock['stock'] > 50 ? 'bg-success' : 'bg-warning'; ?>">
-                                        <?php echo $producto_stock['stock']; ?> unidades
+                                    <span class="badge <?php echo $producto_stock['stock_minimo'] > 50 ? 'bg-success' : 'bg-warning'; ?>">
+                                        <?php echo $producto_stock['stock_minimo']; ?> unidades
                                     </span>
                                 </div>
                             </div>
@@ -239,10 +239,9 @@ $datos_graficos = $producto->obtenerDatosGraficos();
                                             <tr>
                                                 <td><?php echo $row['id']; ?></td>
                                                 <td><strong><?php echo htmlspecialchars($row['nombre']); ?></strong></td>
-                                                -->
                                                 <td>$<?php echo number_format($row['precio'], 2); ?></td>
                                                 <td>
-                                                    <span class="badge <?php echo $row['stock_minimo'] > 10 ? 'bg-success' : ($row['stock_minimo'] > 0 ? 'bg-warning' : 'bg-danger'); ?>">
+                                                    <span class="badge <?php echo $row['stock_minimo'] > 19 ? 'bg-success' : ($row['stock_minimo'] > 0 ? 'bg-warning' : 'bg-danger'); ?>">
                                                         <?php echo $row['stock_minimo']; ?> unidades
                                                     </span>
                                                 </td>
@@ -279,7 +278,7 @@ $datos_graficos = $producto->obtenerDatosGraficos();
 
     <footer class="bg-dark text-white text-center py-3 mt-5">
         <p>Sistema de Inventario &copy; <?php echo date('Y'); ?> |
-            Usuario: <?php echo Session::getUserInfo()['nombre_completo']; ?> |
+            Usuario: <?php echo Session::getUserInfo()['username']; ?> |
             Última actualización: <?php echo date('d/m/Y H:i:s'); ?></p>
     </footer>
 

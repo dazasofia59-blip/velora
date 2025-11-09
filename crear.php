@@ -11,6 +11,7 @@ $producto = new Producto($db);
 
 if ($_POST) {
     $producto->nombre = $_POST['nombre'];
+    $producto->descripcion = $_POST['descripcion'];
     $producto->precio = $_POST['precio'];
     $producto->stock_minimo = $_POST['stock_minimo'];
     $producto->categoria = $_POST['categoria'];

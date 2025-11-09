@@ -22,7 +22,7 @@ if ($producto->leerUno()) {
 
 if ($_POST) {
     $producto->nombre = $_POST['nombre'];
-    // $producto->descripcion = $_POST['descripcion'];
+    $producto->descripcion = $_POST['descripcion'];
     $producto->precio = $_POST['precio'];
     $producto->stock_minimo = $_POST['stock_minimo'];
     $producto->categoria = $_POST['categoria'];
@@ -58,6 +58,10 @@ if ($_POST) {
                             <div class="mb-3">
                                 <label class="form-label">Nombre del Producto</label>
                                 <input type="text" name="nombre" class="form-control" value="<?php echo $nombre; ?>" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Descripción</label>
+                                <textarea name="descripcion" class="form-control" rows="3"></textarea>
                             </div>
 
                             <div class="row">

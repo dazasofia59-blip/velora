@@ -7,6 +7,7 @@ class Producto
     public $id;
     public $nombre;
     public $categoria;
+    public $descripcion;
     public $cantidad;
     public $unidad;
     public $prooveedor;
@@ -147,11 +148,28 @@ class Producto
         $estadisticas['valor_total'] = $row['valor_total'] ?: 0;
 
         // Productos con stock bajo (menos de 10 unidades)
-        $query = "SELECT COUNT(*) as stock_bajo FROM " . $this->table_name . " WHERE stock_minimo < 10";
-        $stmt = $this->conn->prepare($query);
+        // $query = "SELECT COUNT(*) as stock_bajo, nombre FROM " . $this->table_name . " WHERE stock_minimo < 20";
+        // $stmt = $this->conn->prepare($query);
+        // $stmt->execute();
+        // $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        // $estadisticas['stock_bajo'] = $row['stock_bajo']
+
+        // Para el conteo
+        $query_count = "SELECT COUNT(*) as total FROM " . $this->table_name . " WHERE stock_minimo < 20";
+        $stmt = $this->conn->prepare($query_count);
         $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $estadisticas['stock_bajo'] = $row['stock_bajo'];
+        $row_count = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Para los nombres
+        $query_nombres = "SELECT nombre FROM " . $this->table_name . " WHERE stock_minimo < 20";
+        $stmt = $this->conn->prepare($query_nombres);
+        $stmt->execute();
+        $nombres = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+        $estadisticas['stock_bajo'] = [
+            'cantidad' => $row_count['total'],
+            'productos' => $nombres
+        ];
 
         // Productos agotados
         $query = "SELECT COUNT(*) as agotados FROM " . $this->table_name . " WHERE stock_minimo = 0";
