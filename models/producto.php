@@ -160,6 +160,11 @@ class Producto
         $stmt->execute();
         $row_count = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        $query_tab = "SELECT nombre, stock_minimo FROM " . $this->table_name . " WHERE stock_minimo < 20 ORDER BY stock_minimo ASC";
+        $stmt = $this->conn->prepare($query_tab);
+        $stmt->execute();
+        $estadisticas['tabla_stock_bajo'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         // Para los nombres
         $query_nombres = "SELECT nombre FROM " . $this->table_name . " WHERE stock_minimo < 20";
         $stmt = $this->conn->prepare($query_nombres);

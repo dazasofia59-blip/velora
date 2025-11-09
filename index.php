@@ -80,6 +80,8 @@ $datos_graficos = $producto->obtenerDatosGraficos();
             overflow-y: auto;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
@@ -115,10 +117,14 @@ $datos_graficos = $producto->obtenerDatosGraficos();
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); cursor: pointer;"
+                    onclick="mostrarAlertaStockBajo()">
                     <div>⚠️</div>
                     <div class="stat-number"><?php echo $estadisticas['stock_bajo']['cantidad']; ?></div>
                     <div>Stock Bajo</div>
+                    <?php if ($estadisticas['stock_bajo']['cantidad'] > 0): ?>
+                        <small class="d-block mt-2" style="opacity: 0.8;">Click para ver alerta</small>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="col-md-3">
@@ -348,6 +354,83 @@ $datos_graficos = $producto->obtenerDatosGraficos();
                     maintainAspectRatio: false
                 }
             });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Función para mostrar alerta de stock bajo
+        function mostrarAlertaStockBajo() {
+            <?php if ($estadisticas['stock_bajo']['cantidad'] > 0): ?>
+                const productos = <?php echo json_encode($estadisticas['tabla_stock_bajo']); ?>;
+
+                let htmlContent = `
+            <div class="alert alert-warning">
+                <strong>Hay <?php echo $estadisticas['stock_bajo']['cantidad']; ?> productos con stock bajo:</strong>
+            </div>
+            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                <table class="table table-sm table-striped">
+                    <thead class="table-warning">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Stock Actual</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+                productos.forEach(producto => {
+                    const estado = producto.stock_minimo <= 5 ?
+                        '<span class="badge bg-danger">CRÍTICO</span>' :
+                        '<span class="badge bg-warning">BAJO</span>';
+
+                    htmlContent += `
+                <tr>
+                    <td><strong>${producto.nombre}</strong></td>
+                    <td><span class="badge bg-danger">${producto.stock_minimo} unidades</span></td>
+                    <td>${estado}</td>
+                </tr>
+            `;
+                });
+
+                htmlContent += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+                Swal.fire({
+                    title: '⚠️ Alerta de Stock Bajo',
+                    html: htmlContent,
+                    icon: 'warning',
+                    width: 800,
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#ffc107',
+                    showCancelButton: true,
+                    cancelButtonText: 'Agregar Stock',
+                    cancelButtonColor: '#007bff'
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+                        window.location.href = 'crear.php';
+                    }
+                });
+            <?php else: ?>
+                Swal.fire({
+                    title: '✅ Todo en orden',
+                    text: 'No hay productos con stock bajo en este momento',
+                    icon: 'success',
+                    confirmButtonText: 'Genial'
+                });
+            <?php endif; ?>
+        }
+
+        // Auto-abrir al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            <?php if ($estadisticas['stock_bajo']['cantidad'] > 0): ?>
+                setTimeout(mostrarAlertaStockBajo, 1500);
+            <?php endif; ?>
         });
     </script>
 </body>
