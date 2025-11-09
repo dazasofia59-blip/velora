@@ -310,113 +310,116 @@ $datos_graficos = $producto->obtenerDatosGraficos();
                 </div>
             </div>
         </div>
-
         <footer class="bg-dark text-white text-center py-3 mt-5">
             <p>Sistema de Inventario &copy; <?php echo date('Y'); ?> |
                 Usuario: <?php echo Session::getUserInfo()['username']; ?> |
                 Última actualización: <?php echo date('d/m/Y H:i:s'); ?></p>
         </footer>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-        <script>
-            // Datos para los gráficos
-            const stockData = {
-                labels: [<?php echo implode(',', array_map(function ($item) {
-                                return "'" . ($item['categoria'] ?: 'Sin categoría') . "'";
-                            }, $datos_graficos['stock_por_categoria'])); ?>],
-                datasets: [{
-                    label: 'Stock Total',
-                    data: [<?php echo implode(',', array_map(function ($item) {
-                                return $item['total_stock'];
-                            }, $datos_graficos['stock_por_categoria'])); ?>],
-                    backgroundColor: [
-                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
-                        '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
-                    ],
-                    borderWidth: 2
-                }]
-            };
-
-            const valorData = {
-                labels: [<?php echo implode(',', array_map(function ($item) {
-                                return "'" . ($item['categoria'] ?: 'Sin categoría') . "'";
-                            }, $datos_graficos['valor_por_categoria'])); ?>],
-                datasets: [{
-                    label: 'Valor ($)',
-                    data: [<?php echo implode(',', array_map(function ($item) {
-                                return $item['valor'];
-                            }, $datos_graficos['valor_por_categoria'])); ?>],
-                    backgroundColor: [
-                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
-                        '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
-                    ],
-                    borderWidth: 2
-                }]
-            };
-
-            // Inicializar gráficos
-            document.addEventListener('DOMContentLoaded', function() {
-                // Gráfico de barras - Stock por categoría
-                const stockCtx = document.getElementById('stockChart').getContext('2d');
-                new Chart(stockCtx, {
-                    type: 'bar',
-                    data: stockData,
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-
-                // Gráfico de torta - Valor por categoría
-                const valorCtx = document.getElementById('valorChart').getContext('2d');
-                new Chart(valorCtx, {
-                    type: 'pie',
-                    data: valorData,
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false
-                    }
-                });
-            });
-        </script>
+        <!-- SOLO UNA CARGA DE SCRIPTS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
-            // Activar tooltips
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        </script>
+            // Inicializar todo cuando el DOM esté listo
+            document.addEventListener('DOMContentLoaded', function() {
+                // Activar tooltips
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
 
-        <script>
+                // Datos para los gráficos
+                const stockData = {
+                    labels: [<?php echo implode(',', array_map(function ($item) {
+                                    return "'" . ($item['categoria'] ?: 'Sin categoría') . "'";
+                                }, $datos_graficos['stock_por_categoria'])); ?>],
+                    datasets: [{
+                        label: 'Stock Total',
+                        data: [<?php echo implode(',', array_map(function ($item) {
+                                    return $item['total_stock'];
+                                }, $datos_graficos['stock_por_categoria'])); ?>],
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                            '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
+                        ],
+                        borderWidth: 2
+                    }]
+                };
+
+                const valorData = {
+                    labels: [<?php echo implode(',', array_map(function ($item) {
+                                    return "'" . ($item['categoria'] ?: 'Sin categoría') . "'";
+                                }, $datos_graficos['valor_por_categoria'])); ?>],
+                    datasets: [{
+                        label: 'Valor ($)',
+                        data: [<?php echo implode(',', array_map(function ($item) {
+                                    return $item['valor'];
+                                }, $datos_graficos['valor_por_categoria'])); ?>],
+                        backgroundColor: [
+                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                            '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
+                        ],
+                        borderWidth: 2
+                    }]
+                };
+
+                // Inicializar gráficos
+                if (document.getElementById('stockChart')) {
+                    const stockCtx = document.getElementById('stockChart').getContext('2d');
+                    new Chart(stockCtx, {
+                        type: 'bar',
+                        data: stockData,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+
+                if (document.getElementById('valorChart')) {
+                    const valorCtx = document.getElementById('valorChart').getContext('2d');
+                    new Chart(valorCtx, {
+                        type: 'pie',
+                        data: valorData,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false
+                        }
+                    });
+                }
+
+                // Auto-abrir alerta de stock bajo
+                <?php if ($estadisticas['stock_bajo']['cantidad'] > 0): ?>
+                    setTimeout(mostrarAlertaStockBajo, 1500);
+                <?php endif; ?>
+            });
+
             // Función para mostrar alerta de stock bajo
             function mostrarAlertaStockBajo() {
                 <?php if ($estadisticas['stock_bajo']['cantidad'] > 0): ?>
                     const productos = <?php echo json_encode($estadisticas['tabla_stock_bajo']); ?>;
 
                     let htmlContent = `
-            <div class="alert alert-warning">
-                <strong>Hay <?php echo $estadisticas['stock_bajo']['cantidad']; ?> productos con stock bajo:</strong>
-            </div>
-            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
-                <table class="table table-sm table-striped">
-                    <thead class="table-warning">
-                        <tr>
-                            <th>Producto</th>
-                            <th>Stock Actual</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-        `;
+                    <div class="alert alert-warning">
+                        <strong>Hay <?php echo $estadisticas['stock_bajo']['cantidad']; ?> productos con stock bajo:</strong>
+                    </div>
+                    <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                        <table class="table table-sm table-striped">
+                            <thead class="table-warning">
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Stock Actual</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
 
                     productos.forEach(producto => {
                         const estado = producto.stock_minimo <= 5 ?
@@ -424,19 +427,19 @@ $datos_graficos = $producto->obtenerDatosGraficos();
                             '<span class="badge bg-warning">BAJO</span>';
 
                         htmlContent += `
-                <tr>
-                    <td><strong>${producto.nombre}</strong></td>
-                    <td><span class="badge bg-danger">${producto.stock_minimo} unidades</span></td>
-                    <td>${estado}</td>
-                </tr>
-            `;
+                        <tr>
+                            <td><strong>${producto.nombre}</strong></td>
+                            <td><span class="badge bg-danger">${producto.stock_minimo} unidades</span></td>
+                            <td>${estado}</td>
+                        </tr>
+                    `;
                     });
 
                     htmlContent += `
-                    </tbody>
-                </table>
-            </div>
-        `;
+                            </tbody>
+                        </table>
+                    </div>
+                `;
 
                     Swal.fire({
                         title: '⚠️ Alerta de Stock Bajo',
@@ -462,13 +465,6 @@ $datos_graficos = $producto->obtenerDatosGraficos();
                     });
                 <?php endif; ?>
             }
-
-            // Auto-abrir al cargar la página
-            document.addEventListener('DOMContentLoaded', function() {
-                <?php if ($estadisticas['stock_bajo']['cantidad'] > 0): ?>
-                    setTimeout(mostrarAlertaStockBajo, 1500);
-                <?php endif; ?>
-            });
         </script>
 </body>
 
