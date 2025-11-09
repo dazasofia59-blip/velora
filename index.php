@@ -219,6 +219,7 @@ $datos_graficos = $producto->obtenerDatosGraficos();
         </div>
 
         <!-- Tabla de Productos (sección inferior) -->
+        <!-- Tabla de Productos (sección inferior) -->
         <div class="row mt-4">
             <div class="col-12">
                 <div class="card">
@@ -234,6 +235,7 @@ $datos_graficos = $producto->obtenerDatosGraficos();
                                         <tr>
                                             <th>ID</th>
                                             <th>Nombre</th>
+                                            <th>Descripción</th>
                                             <th>Precio</th>
                                             <th>Stock</th>
                                             <th>Categoría</th>
@@ -244,10 +246,31 @@ $datos_graficos = $producto->obtenerDatosGraficos();
                                         <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
                                             <tr>
                                                 <td><?php echo $row['id']; ?></td>
-                                                <td><strong><?php echo htmlspecialchars($row['nombre']); ?></strong></td>
-                                                <td>$<?php echo number_format($row['precio'], 2); ?></td>
                                                 <td>
-                                                    <span class="badge <?php echo $row['stock_minimo'] > 19 ? 'bg-success' : ($row['stock_minimo'] > 0 ? 'bg-warning' : 'bg-danger'); ?>">
+                                                    <strong><?php echo htmlspecialchars($row['nombre']); ?></strong>
+                                                </td>
+                                                <td>
+                                                    <?php if (!empty($row['descripcion'])): ?>
+                                                        <span class="text-muted"
+                                                            data-bs-toggle="tooltip"
+                                                            data-bs-placement="top"
+                                                            title="<?php echo htmlspecialchars($row['descripcion']); ?>">
+                                                            <?php
+                                                            // Mostrar solo los primeros 50 caracteres
+                                                            echo strlen($row['descripcion']) > 50 ?
+                                                                htmlspecialchars(substr($row['descripcion'], 0, 50)) . '...' :
+                                                                htmlspecialchars($row['descripcion']);
+                                                            ?>
+                                                        </span>
+                                                    <?php else: ?>
+                                                        <span class="text-muted fst-italic">Sin descripción</span>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td class="text-nowrap">$<?php echo number_format($row['precio'], 2); ?></td>
+                                                <td>
+                                                    <span class="badge <?php
+                                                                        echo $row['stock_minimo'] > 20 ? 'bg-success' : ($row['stock_minimo'] > 10 ? 'bg-warning' : 'bg-danger');
+                                                                        ?>">
                                                         <?php echo $row['stock_minimo']; ?> unidades
                                                     </span>
                                                 </td>
@@ -255,14 +278,21 @@ $datos_graficos = $producto->obtenerDatosGraficos();
                                                     <span class="badge bg-info"><?php echo htmlspecialchars($row['categoria']); ?></span>
                                                 </td>
                                                 <td>
-                                                    <a href="editar.php?id=<?php echo $row['id']; ?>" class="btn btn-warning btn-sm">
-                                                        ✏️ Editar
-                                                    </a>
-                                                    <a href="eliminar.php?id=<?php echo $row['id']; ?>"
-                                                        class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('¿Estás seguro de eliminar este producto?')">
-                                                        🗑️ Eliminar
-                                                    </a>
+                                                    <div class="btn-group btn-group-sm">
+                                                        <a href="editar.php?id=<?php echo $row['id']; ?>"
+                                                            class="btn btn-warning"
+                                                            data-bs-toggle="tooltip"
+                                                            title="Editar producto">
+                                                            ✏️
+                                                        </a>
+                                                        <a href="eliminar.php?id=<?php echo $row['id']; ?>"
+                                                            class="btn btn-danger"
+                                                            onclick="return confirm('¿Estás seguro de eliminar este producto?')"
+                                                            data-bs-toggle="tooltip"
+                                                            title="Eliminar producto">
+                                                            🗑️
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endwhile; ?>
@@ -280,92 +310,99 @@ $datos_graficos = $producto->obtenerDatosGraficos();
                 </div>
             </div>
         </div>
-    </div>
 
-    <footer class="bg-dark text-white text-center py-3 mt-5">
-        <p>Sistema de Inventario &copy; <?php echo date('Y'); ?> |
-            Usuario: <?php echo Session::getUserInfo()['username']; ?> |
-            Última actualización: <?php echo date('d/m/Y H:i:s'); ?></p>
-    </footer>
+        <footer class="bg-dark text-white text-center py-3 mt-5">
+            <p>Sistema de Inventario &copy; <?php echo date('Y'); ?> |
+                Usuario: <?php echo Session::getUserInfo()['username']; ?> |
+                Última actualización: <?php echo date('d/m/Y H:i:s'); ?></p>
+        </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        // Datos para los gráficos
-        const stockData = {
-            labels: [<?php echo implode(',', array_map(function ($item) {
-                            return "'" . ($item['categoria'] ?: 'Sin categoría') . "'";
-                        }, $datos_graficos['stock_por_categoria'])); ?>],
-            datasets: [{
-                label: 'Stock Total',
-                data: [<?php echo implode(',', array_map(function ($item) {
-                            return $item['total_stock'];
-                        }, $datos_graficos['stock_por_categoria'])); ?>],
-                backgroundColor: [
-                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
-                    '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
-                ],
-                borderWidth: 2
-            }]
-        };
+        <script>
+            // Datos para los gráficos
+            const stockData = {
+                labels: [<?php echo implode(',', array_map(function ($item) {
+                                return "'" . ($item['categoria'] ?: 'Sin categoría') . "'";
+                            }, $datos_graficos['stock_por_categoria'])); ?>],
+                datasets: [{
+                    label: 'Stock Total',
+                    data: [<?php echo implode(',', array_map(function ($item) {
+                                return $item['total_stock'];
+                            }, $datos_graficos['stock_por_categoria'])); ?>],
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                        '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
+                    ],
+                    borderWidth: 2
+                }]
+            };
 
-        const valorData = {
-            labels: [<?php echo implode(',', array_map(function ($item) {
-                            return "'" . ($item['categoria'] ?: 'Sin categoría') . "'";
-                        }, $datos_graficos['valor_por_categoria'])); ?>],
-            datasets: [{
-                label: 'Valor ($)',
-                data: [<?php echo implode(',', array_map(function ($item) {
-                            return $item['valor'];
-                        }, $datos_graficos['valor_por_categoria'])); ?>],
-                backgroundColor: [
-                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
-                    '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
-                ],
-                borderWidth: 2
-            }]
-        };
+            const valorData = {
+                labels: [<?php echo implode(',', array_map(function ($item) {
+                                return "'" . ($item['categoria'] ?: 'Sin categoría') . "'";
+                            }, $datos_graficos['valor_por_categoria'])); ?>],
+                datasets: [{
+                    label: 'Valor ($)',
+                    data: [<?php echo implode(',', array_map(function ($item) {
+                                return $item['valor'];
+                            }, $datos_graficos['valor_por_categoria'])); ?>],
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                        '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'
+                    ],
+                    borderWidth: 2
+                }]
+            };
 
-        // Inicializar gráficos
-        document.addEventListener('DOMContentLoaded', function() {
-            // Gráfico de barras - Stock por categoría
-            const stockCtx = document.getElementById('stockChart').getContext('2d');
-            new Chart(stockCtx, {
-                type: 'bar',
-                data: stockData,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true
+            // Inicializar gráficos
+            document.addEventListener('DOMContentLoaded', function() {
+                // Gráfico de barras - Stock por categoría
+                const stockCtx = document.getElementById('stockChart').getContext('2d');
+                new Chart(stockCtx, {
+                    type: 'bar',
+                    data: stockData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
                         }
                     }
-                }
+                });
+
+                // Gráfico de torta - Valor por categoría
+                const valorCtx = document.getElementById('valorChart').getContext('2d');
+                new Chart(valorCtx, {
+                    type: 'pie',
+                    data: valorData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
             });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-            // Gráfico de torta - Valor por categoría
-            const valorCtx = document.getElementById('valorChart').getContext('2d');
-            new Chart(valorCtx, {
-                type: 'pie',
-                data: valorData,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                }
+        <script>
+            // Activar tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
             });
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        </script>
 
-    <script>
-        // Función para mostrar alerta de stock bajo
-        function mostrarAlertaStockBajo() {
-            <?php if ($estadisticas['stock_bajo']['cantidad'] > 0): ?>
-                const productos = <?php echo json_encode($estadisticas['tabla_stock_bajo']); ?>;
+        <script>
+            // Función para mostrar alerta de stock bajo
+            function mostrarAlertaStockBajo() {
+                <?php if ($estadisticas['stock_bajo']['cantidad'] > 0): ?>
+                    const productos = <?php echo json_encode($estadisticas['tabla_stock_bajo']); ?>;
 
-                let htmlContent = `
+                    let htmlContent = `
             <div class="alert alert-warning">
                 <strong>Hay <?php echo $estadisticas['stock_bajo']['cantidad']; ?> productos con stock bajo:</strong>
             </div>
@@ -381,58 +418,58 @@ $datos_graficos = $producto->obtenerDatosGraficos();
                     <tbody>
         `;
 
-                productos.forEach(producto => {
-                    const estado = producto.stock_minimo <= 5 ?
-                        '<span class="badge bg-danger">CRÍTICO</span>' :
-                        '<span class="badge bg-warning">BAJO</span>';
+                    productos.forEach(producto => {
+                        const estado = producto.stock_minimo <= 5 ?
+                            '<span class="badge bg-danger">CRÍTICO</span>' :
+                            '<span class="badge bg-warning">BAJO</span>';
 
-                    htmlContent += `
+                        htmlContent += `
                 <tr>
                     <td><strong>${producto.nombre}</strong></td>
                     <td><span class="badge bg-danger">${producto.stock_minimo} unidades</span></td>
                     <td>${estado}</td>
                 </tr>
             `;
-                });
+                    });
 
-                htmlContent += `
+                    htmlContent += `
                     </tbody>
                 </table>
             </div>
         `;
 
-                Swal.fire({
-                    title: '⚠️ Alerta de Stock Bajo',
-                    html: htmlContent,
-                    icon: 'warning',
-                    width: 800,
-                    confirmButtonText: 'Entendido',
-                    confirmButtonColor: '#ffc107',
-                    showCancelButton: true,
-                    cancelButtonText: 'Agregar Stock',
-                    cancelButtonColor: '#007bff'
-                }).then((result) => {
-                    if (result.dismiss === Swal.DismissReason.cancel) {
-                        window.location.href = 'crear.php';
-                    }
-                });
-            <?php else: ?>
-                Swal.fire({
-                    title: '✅ Todo en orden',
-                    text: 'No hay productos con stock bajo en este momento',
-                    icon: 'success',
-                    confirmButtonText: 'Genial'
-                });
-            <?php endif; ?>
-        }
+                    Swal.fire({
+                        title: '⚠️ Alerta de Stock Bajo',
+                        html: htmlContent,
+                        icon: 'warning',
+                        width: 800,
+                        confirmButtonText: 'Entendido',
+                        confirmButtonColor: '#ffc107',
+                        showCancelButton: true,
+                        cancelButtonText: 'Agregar Stock',
+                        cancelButtonColor: '#007bff'
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.cancel) {
+                            window.location.href = 'crear.php';
+                        }
+                    });
+                <?php else: ?>
+                    Swal.fire({
+                        title: '✅ Todo en orden',
+                        text: 'No hay productos con stock bajo en este momento',
+                        icon: 'success',
+                        confirmButtonText: 'Genial'
+                    });
+                <?php endif; ?>
+            }
 
-        // Auto-abrir al cargar la página
-        document.addEventListener('DOMContentLoaded', function() {
-            <?php if ($estadisticas['stock_bajo']['cantidad'] > 0): ?>
-                setTimeout(mostrarAlertaStockBajo, 1500);
-            <?php endif; ?>
-        });
-    </script>
+            // Auto-abrir al cargar la página
+            document.addEventListener('DOMContentLoaded', function() {
+                <?php if ($estadisticas['stock_bajo']['cantidad'] > 0): ?>
+                    setTimeout(mostrarAlertaStockBajo, 1500);
+                <?php endif; ?>
+            });
+        </script>
 </body>
 
 </html>

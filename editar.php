@@ -12,6 +12,7 @@ $producto = new Producto($db);
 $producto->id = isset($_GET['id']) ? $_GET['id'] : die('ERROR: ID no encontrado.');
 
 if ($producto->leerUno()) {
+    $descripcion = $producto->descripcion;
     $nombre = $producto->nombre;
     $precio = $producto->precio;
     $stock_minimo = $producto->stock_minimo;
@@ -60,8 +61,8 @@ if ($_POST) {
                                 <input type="text" name="nombre" class="form-control" value="<?php echo $nombre; ?>" required>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Descripción</label>
-                                <textarea name="descripcion" class="form-control" rows="3"></textarea>
+                                <label for="descripcion" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3"><?php echo isset($producto->descripcion) ? $producto->descripcion : ''; ?></textarea>
                             </div>
 
                             <div class="row">

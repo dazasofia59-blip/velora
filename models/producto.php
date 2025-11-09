@@ -27,22 +27,22 @@ class Producto
     public function crear()
     {
         $query = "INSERT INTO " . $this->table_name . " 
-                (nombre,  precio, stock_minimo, categoria) 
+                (nombre,,descripcion, precio, stock_minimo, categoria) 
                 VALUES 
-                (:nombre, :precio, :stock_minimo, :categoria)";
+                (:nombre, :precio, :descripcion, :stock_minimo, :categoria)";
 
         $stmt = $this->conn->prepare($query);
 
         // Limpiar datos
         $this->nombre = htmlspecialchars(strip_tags($this->nombre));
-
+        $this->descripcion = htmlspecialchars(strip_tags($this->descripcion));
         $this->precio = htmlspecialchars(strip_tags($this->precio));
         $this->stock_minimo = htmlspecialchars(strip_tags($this->stock_minimo));
         $this->categoria = htmlspecialchars(strip_tags($this->categoria));
 
         // Vincular parámetros
         $stmt->bindParam(":nombre", $this->nombre);
-        // $stmt->bindParam(":descripcion", $this->descripcion);
+        $stmt->bindParam(":descripcion", $this->descripcion);
         $stmt->bindParam(":precio", $this->precio);
         $stmt->bindParam(":stock_minimo", $this->stock_minimo);
         $stmt->bindParam(":categoria", $this->categoria);
@@ -54,13 +54,17 @@ class Producto
     }
 
     // Leer todos los productos
+    // Leer todos los productos
     public function leer()
     {
-        $query = "SELECT * FROM " . $this->table_name . " ORDER BY fecha_creacion DESC";
+        $query = "SELECT id, nombre, descripcion, precio, stock_minimo, categoria, fecha_creacion 
+            FROM " . $this->table_name . " 
+            ORDER BY fecha_creacion DESC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
     }
+
 
     // Leer un solo producto
     public function leerUno()
@@ -74,6 +78,7 @@ class Producto
 
         if ($row) {
             $this->nombre = $row['nombre'];
+            $this->descripcion = $row['descripcion'];
             $this->precio = $row['precio'];
             $this->stock_minimo = $row['stock_minimo'];
             $this->categoria = $row['categoria'];
@@ -86,7 +91,7 @@ class Producto
     public function actualizar()
     {
         $query = "UPDATE " . $this->table_name . " 
-                SET nombre=:nombre, precio=:precio, 
+                SET nombre=:nombre, descripcion=:descripcion, precio=:precio, 
                     stock_minimo=:stock_minimo, categoria=:categoria 
                 WHERE id=:id";
 
@@ -95,6 +100,7 @@ class Producto
         // Limpiar datos
         $this->nombre = htmlspecialchars(strip_tags($this->nombre));
         $this->precio = htmlspecialchars(strip_tags($this->precio));
+        $this->descripcion = htmlspecialchars(strip_tags($this->descripcion));
         $this->stock_minimo = htmlspecialchars(strip_tags($this->stock_minimo));
         $this->categoria = htmlspecialchars(strip_tags($this->categoria));
         $this->id = htmlspecialchars(strip_tags($this->id));
@@ -102,6 +108,7 @@ class Producto
 
         // Vincular parámetros
         $stmt->bindParam(":nombre", $this->nombre);
+        $stmt->bindParam(":descripcion", $this->descripcion);
         $stmt->bindParam(":precio", $this->precio);
         $stmt->bindParam(":stock_minimo", $this->stock_minimo);
         $stmt->bindParam(":categoria", $this->categoria);
