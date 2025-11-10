@@ -76,9 +76,21 @@ if ($_POST) {
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="mb-3">
+                                    <!-- <div class="mb-3">
                                         <label class="form-label">Stock</label>
                                         <input type="number" name="stock_minimo" class="form-control" value="<?php echo $stock_minimo; ?>" required>
+                                    </div> -->
+                                    <div class="mb-3">
+                                        <label for="stock_minimo" class="form-label">Stock Mínimo</label>
+                                        <input type="number" 
+                                                class="form-control" 
+                                                id="stock_minimo" 
+                                                name="stock_minimo" 
+                                                min="0" 
+                                                max="1000" 
+                                                value="<?php echo isset($producto->stock_minimo) ? $producto->stock_minimo : '0'; ?>" 
+                                                required>
+                                        <div class="form-text">El stock mínimo no puede ser negativo.</div>
                                     </div>
                                 </div>
                             </div>
@@ -97,5 +109,37 @@ if ($_POST) {
         </div>
     </div>
 </body>
+<script>
+    // En crear.php y editar.php
+document.addEventListener('DOMContentLoaded', function() {
+    const stockInput = document.getElementById('stock_minimo');
+    
+    stockInput.addEventListener('input', function() {
+        if (this.value < 0) {
+            this.value = 0;
+            Swal.fire({
+                icon: 'warning',
+                title: 'Valor inválido',
+                text: 'El stock mínimo no puede ser negativo',
+                timer: 2000
+            });
+        }
+    });
+    
+    // Validación antes de enviar el formulario
+    document.querySelector('form').addEventListener('submit', function(e) {
+        if (stockInput.value < 0) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Por favor, ingrese un valor de stock mínimo válido (0 o mayor)',
+                confirmButtonText: 'Entendido'
+            });
+            stockInput.focus();
+        }
+    });
+});
+</script>
 
 </html>

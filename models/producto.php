@@ -24,34 +24,40 @@ class Producto
     }
 
     // Crear producto
-    public function crear()
-    {
-        $query = "INSERT INTO " . $this->table_name . " 
-                (nombre, precio, descripcion, stock_minimo, categoria) 
-                VALUES 
-                (:nombre, :precio, :descripcion, :stock_minimo, :categoria)";
-
-        $stmt = $this->conn->prepare($query);
-
-        // Limpiar datos
-        $this->nombre = htmlspecialchars(strip_tags($this->nombre));
-        $this->descripcion = htmlspecialchars(strip_tags($this->descripcion));
-        $this->precio = htmlspecialchars(strip_tags($this->precio));
-        $this->stock_minimo = htmlspecialchars(strip_tags($this->stock_minimo));
-        $this->categoria = htmlspecialchars(strip_tags($this->categoria));
-
-        // Vincular parámetros
-        $stmt->bindParam(":nombre", $this->nombre);
-        $stmt->bindParam(":descripcion", $this->descripcion);
-        $stmt->bindParam(":precio", $this->precio);
-        $stmt->bindParam(":stock_minimo", $this->stock_minimo);
-        $stmt->bindParam(":categoria", $this->categoria);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-        return false;
+   // Crear producto
+public function crear()
+{
+    // Validar que el stock mínimo no sea negativo
+    if ($this->stock_minimo < 0) {
+        throw new Exception("El stock mínimo no puede ser negativo");
     }
+    
+    $query = "INSERT INTO " . $this->table_name . " 
+            (nombre, descripcion, precio, stock_minimo, categoria) 
+            VALUES 
+            (:nombre, :descripcion, :precio, :stock_minimo, :categoria)";
+
+    $stmt = $this->conn->prepare($query);
+
+    // Limpiar datos
+    $this->nombre = htmlspecialchars(strip_tags($this->nombre));
+    $this->descripcion = htmlspecialchars(strip_tags($this->descripcion));
+    $this->precio = htmlspecialchars(strip_tags($this->precio));
+    $this->stock_minimo = htmlspecialchars(strip_tags($this->stock_minimo));
+    $this->categoria = htmlspecialchars(strip_tags($this->categoria));
+
+    // Vincular parámetros
+    $stmt->bindParam(":nombre", $this->nombre);
+    $stmt->bindParam(":descripcion", $this->descripcion);
+    $stmt->bindParam(":precio", $this->precio);
+    $stmt->bindParam(":stock_minimo", $this->stock_minimo);
+    $stmt->bindParam(":categoria", $this->categoria);
+
+    if ($stmt->execute()) {
+        return true;
+    }
+    return false;
+}
 
     // Leer todos los productos
     // Leer todos los productos
@@ -89,13 +95,16 @@ class Producto
 
     // Actualizar producto
     public function actualizar()
-    {
-        $query = "UPDATE " . $this->table_name . " 
-                SET nombre=:nombre, descripcion=:descripcion, precio=:precio, 
-                    stock_minimo=:stock_minimo, categoria=:categoria 
-                WHERE id=:id";
-
-        $stmt = $this->conn->prepare($query);
+{
+    // Validar que el stock mínimo no sea negativo
+    if ($this->stock_minimo < 0) {
+        throw new Exception("El stock mínimo no puede ser negativo");
+    }
+    
+    $query = "UPDATE " . $this->table_name . " 
+            SET nombre=:nombre, descripcion=:descripcion, precio=:precio, 
+                stock_minimo=:stock_minimo, categoria=:categoria 
+            WHERE id=:id";
 
         // Limpiar datos
         $this->nombre = htmlspecialchars(strip_tags($this->nombre));
